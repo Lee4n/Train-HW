@@ -14,20 +14,28 @@ $(document).ready(function () {
 
     var database = firebase.database();
 
-    $("#submit").on("click", function () {
+    $("#addTrain").on("click", function () {
         event.preventDefault()
-        var trainName = $("#trainName").val().trim();
-        var trainDest = $("#trainDest").val().trim();
-        var trainTime = $("#trainTime").val().trim();
-        var trainFreq = $("#trainFreq").val().trim();
+        var name = $("#trainName").val().trim();
+        var destination = $("#trainDest").val().trim();
+        var time = $("#trainTime").val().trim();
+        var frequency = $("#trainFreq").val().trim();
 
         database.ref().push({
-            name: trainName,
-            destination: trainDest,
-            time: trainTime,
-            frequency: trainFreq
+            name: name,
+            destination: destination,
+            time: time,
+            frequency: frequency
         });
     });
 
-    
+    database.ref().on("child_added", function(snapshot) {
+        $("tbody").append("<tr>" +
+        snapshot.val().name +
+        "<td>" + snapshot.val().destination +
+        "<td>" + snapshot.val().time +
+        "<td>" + snapshot.val().frequency
+        );
+    });
+
 });
